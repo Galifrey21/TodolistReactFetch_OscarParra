@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 const API_URL = "https://playground.4geeks.com/todo/todos/TU_USUARIO";
 
 const Tareas = () => {
-  const [tasks, setTasks] = useState([]); // Lista de tareas
-  const [taskInput, setTaskInput] = useState(""); // Input de nueva tarea
+  const [tasks, setTasks] = useState([]); 
+  const [taskInput, setTaskInput] = useState(""); 
 
-  // 🔹 Cargar tareas desde la API al iniciar
+  
   useEffect(() => {
     fetch(API_URL)
       .then((resp) => resp.json())
@@ -19,7 +19,7 @@ const Tareas = () => {
       .catch((error) => console.error("Error al cargar tareas:", error));
   }, []);
 
-  // 🔹 Actualizar tareas en la API
+  
   const updateTasksOnServer = (newTasks) => {
     fetch(API_URL, {
       method: "PUT",
@@ -34,35 +34,35 @@ const Tareas = () => {
       .catch((error) => console.error("Error al actualizar tareas:", error));
   };
 
-  // 🔹 Agregar tarea
+  
   const addTask = (e) => {
     if (e.key === "Enter" && taskInput.trim() !== "") {
       const newTask = { id: Date.now(), text: taskInput.trim() };
       const newTasks = [...tasks, newTask];
       updateTasksOnServer(newTasks);
-      setTaskInput(""); // Limpiar el input después de agregar la tarea
+      setTaskInput(""); 
     }
   };
 
-  // 🔹 Eliminar tarea por ID
+  
   const deleteTask = (id) => {
     const newTasks = tasks.filter((task) => task.id !== id);
     updateTasksOnServer(newTasks);
   };
 
-  // 🔹 Eliminar todas las tareas
+ 
   const clearAllTasks = () => {
     if (window.confirm("¿Estás seguro de borrar todas las tareas?")) {
       updateTasksOnServer([]);
     }
   };
 
-  console.log(tasks);  // Ver el estado de las tareas cada vez que se renderiza
+  console.log(tasks);  
 
   return (
     <div className="notebook-container d-flex justify-content-center align-items-center">
       <div className="notebook p-4">
-        {/* 📝 Input para añadir tareas */}
+        
         <textarea
           className="notebook-textarea"
           value={taskInput}
@@ -70,14 +70,14 @@ const Tareas = () => {
           onKeyDown={addTask}
           placeholder="Escribe tu tarea y presiona Enter..."
           onBlur={(e) => {
-            // Si el campo está vacío al perder el foco, el placeholder se verá
+            
             if (e.target.value.trim() === "") {
-              setTaskInput(""); // Asegúrate de mantener el campo vacío al perder el foco
+              setTaskInput(""); 
             }
           }}
         ></textarea>
 
-        {/* 🔹 Lista de tareas */}
+        
         <ul className="task-list mt-3">
           {tasks.length === 0 ? (
             <p className="text-muted">No hay tareas. Añade una tarea.</p>
@@ -96,7 +96,7 @@ const Tareas = () => {
           )}
         </ul>
 
-        {/* 🔥 BOTÓN PARA BORRAR TODAS LAS TAREAS */}
+        
         {tasks.length > 0 && (
           <button
             className="btn btn-warning mt-3"

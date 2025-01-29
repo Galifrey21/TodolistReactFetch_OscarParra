@@ -10,7 +10,7 @@
     import 'relative/path/to/stylesheet.scss';
 
 */
-/* Contenedor principal */
+
 .notebook-container {
     background-color: #f8f9fa;
     height: 100vh;
@@ -19,7 +19,7 @@
     align-items: center;
   }
   
-  /* Cuaderno */
+  
   .notebook {
     background-color: white;
     width: 90%;
@@ -32,7 +32,7 @@
     overflow: hidden;
   }
   
-  /* Líneas del cuaderno */
+  
   .notebook:before {
     content: "";
     position: absolute;
@@ -61,7 +61,7 @@
     z-index: 1;
   }
   
-  /* Área de texto */
+  
   .notebook-textarea {
     position: relative;
     width: 100%;
@@ -86,7 +86,7 @@
     transition: opacity 0.2s ease-in-out;
   }
   
-  /* Lista de tareas */
+  
   .task-list {
     list-style: none;
     padding: 0;
@@ -111,7 +111,7 @@
     margin-left: 18px;
   }
   
-  /* Estilo del botón Eliminar */
+ 
   .task-list button {
     cursor: pointer;
     background-color: #ff7675;
