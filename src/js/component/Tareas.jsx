@@ -24,20 +24,6 @@ const Tareas = () => {
       .catch((error) => console.error("Error al cargar tareas:", error));
   }, []);
 
-  
-  const updateTasksOnServer = (task) => {
-    fetch(API_URL + "todos/" + task.id, {
-      method: "PUT",
-      body: JSON.stringify(task),
-      headers: { "Content-Type": "application/json" },
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        console.log("Servidor actualizado:", data);
-        setTasks(task);
-      })
-      .catch((error) => console.error("Error al actualizar tareas:", error));
-  };
 
   
   const addTask = (e) => {
