@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const API_URL = "https://playground.4geeks.com/todo/todos/TU_USUARIO";
+const API_URL = "https://playground.4geeks.com/todo/";
+const USER = "oscar"
 
 const Tareas = () => {
   const [tasks, setTasks] = useState([]); 
@@ -8,7 +9,11 @@ const Tareas = () => {
 
   
   useEffect(() => {
-    fetch(API_URL)
+    fetch(API_URL + "users/" + USER,{
+      method:"POST",
+      body:"",
+      headers: { "Content-Type": "application/json" },
+    } )
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Tareas obtenidas:", data);
@@ -20,16 +25,16 @@ const Tareas = () => {
   }, []);
 
   
-  const updateTasksOnServer = (newTasks) => {
-    fetch(API_URL, {
+  const updateTasksOnServer = (task) => {
+    fetch(API_URL + "todos/" + task.id, {
       method: "PUT",
-      body: JSON.stringify(newTasks),
+      body: JSON.stringify(task),
       headers: { "Content-Type": "application/json" },
     })
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Servidor actualizado:", data);
-        setTasks(newTasks);
+        setTasks(task);
       })
       .catch((error) => console.error("Error al actualizar tareas:", error));
   };
@@ -37,9 +42,17 @@ const Tareas = () => {
   
   const addTask = (e) => {
     if (e.key === "Enter" && taskInput.trim() !== "") {
-      const newTask = { id: Date.now(), text: taskInput.trim() };
-      const newTasks = [...tasks, newTask];
-      updateTasksOnServer(newTasks);
+      fetch(API_URL + "todos/" + USER, {
+        method: "POST",
+        body: JSON.stringify({label:taskInput,is_done:false}),
+        headers: { "Content-Type": "application/json" },
+      })
+      .then((resp) => resp.json())
+      .then((data) => {
+        console.log("Servidor actualizado:", data);
+        setTasks(tasks.push(data));
+      })
+      .catch((error) => console.error("Error al actualizar tareas:", error));
       setTaskInput(""); 
     }
   };
