@@ -50,7 +50,8 @@ const Tareas = () => {
       .then((resp) => resp.json())
       .then((data) => {
         console.log("Servidor actualizado:", data);
-        setTasks(tasks.push(data));
+        const _task = [...tasks,data]
+        setTasks(_task);
       })
       .catch((error) => console.error("Error al actualizar tareas:", error));
       setTaskInput(""); 
@@ -58,15 +59,32 @@ const Tareas = () => {
   };
 
   
-  const deleteTask = (id) => {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    updateTasksOnServer(newTasks);
+  const deleteTask = (id, deleteAll=false) => {
+    fetch(API_URL + "todos/" + id, {
+      method: "DELETE",
+      body: "",
+      headers: { "Content-Type": "application/json" },
+    })
+    .then(() => {
+      const copyTask = [...tasks]
+      const taskIndex = copyTask.findIndex(i => i.id === id)
+      if (taskIndex != -1){
+        copyTask.splice(taskIndex,1)
+        if(!deleteAll){
+        setTasks(copyTask)
+        }
+      }
+    })
+    .catch((error) => console.error("Error al actualizar tareas:", error));
   };
 
  
   const clearAllTasks = () => {
     if (window.confirm("¿Estás seguro de borrar todas las tareas?")) {
-      updateTasksOnServer([]);
+     tasks.forEach(task =>{
+      deleteTask(task.id,true)
+      setTasks([])
+     })
     }
   };
 
@@ -97,7 +115,7 @@ const Tareas = () => {
           ) : (
             tasks.map((task) => (
               <li key={task.id} className="task-item d-flex justify-content-between align-items-center">
-                <span>{task.text}</span>
+                <span>{task.label}</span>
                 <button
                   className="btn btn-danger btn-sm"
                   onClick={() => deleteTask(task.id)}
